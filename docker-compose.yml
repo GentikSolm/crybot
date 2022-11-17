@@ -1,0 +1,53 @@
+version: "3"
+services:
+  mongo:
+    image: mongo:4.4
+    volumes:
+      - mymongo:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=abot
+      - MONGO_INITDB_ROOT_PASSWORD=toor88
+      - MONGO_INITDB_DATABASE=abot
+    ports:
+      - "27017:27017"
+    networks:
+      - bot-net
+    restart: unless-stopped
+
+  mongo-express:
+    image: mongo-express
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongo
+      - ME_CONFIG_MONGODB_PORT=27017
+      - ME_CONFIG_MONGODB_ENABLE_ADMIN=true
+      - ME_CONFIG_MONGODB_AUTH_DATABASE=admin
+      - ME_CONFIG_MONGODB_AUTH_USERNAME=abot
+      - ME_CONFIG_MONGODB_AUTH_PASSWORD=toor88
+      - ME_CONFIG_BASICAUTH_USERNAME=dev
+      - ME_CONFIG_BASICAUTH_PASSWORD=dev
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mongo
+      - bot
+    networks:
+      - bot-net
+    restart: unless-stopped
+
+  bot:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - .:/bot
+    networks:
+      - bot-net
+    restart: unless-stopped
+    env_file:
+      - .env
+
+volumes:
+  mymongo:
+
+networks:
+  bot-net:
