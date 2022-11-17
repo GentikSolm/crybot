@@ -1,0 +1,14 @@
+[[source]]
+url = 'https://pypi.python.org/simple'
+verify_ssl = true
+name = 'pypi'
+
+[packages]
+pymongo = "4.1.1"
+SlashDiscord = "0.3.1"
+nextcord = "*"
+ipython = "*"
+python-dotenv = "*"
+
+[requires]
+python_version = "3.10"
