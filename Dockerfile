@@ -10,5 +10,5 @@ RUN pipenv lock && pipenv --clear && pipenv --rm
 RUN pipenv install --deploy --system
 
 COPY . /bot
-CMD ["python", "bot.py"]
+CMD ["python", "-u", "bot.py"]
 
