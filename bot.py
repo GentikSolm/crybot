@@ -37,7 +37,7 @@ async def cry(interaction: nextcord.Interaction):
         if(crier == None):
             total = 1
             db.criers.insert_one({"user": interaction.user.id, 'last': today, 'total': total})
-            await interaction.response.send_message(f"Seems like your new here, your crying streak starts.... Now!")
+            await interaction.response.send_message(f"Seems like you're new here, your crying streak starts.... Now!")
             return
 
         if(crier['last'] == today):
@@ -46,11 +46,11 @@ async def cry(interaction: nextcord.Interaction):
 
         if(crier['last'] == yesterday):
             total = crier['total'] + 1
-            db.criers.update_one({"user": interaction.user.id}, {'last': today, 'total': total})
-            await interaction.response.send_message(f"Your on a roll, youve cried for {total} days in a row!")
+            db.criers.update_one({"user": interaction.user.id}, {'$set': {'last': today, 'total': total} })
+            await interaction.response.send_message(f"You're on a roll, youve cried for {total} days in a row!")
             return
         total = 1
-        db.criers.update_one({"user": interaction.user.id}, {'last': today, 'total': total})
+        db.criers.update_one({"user": interaction.user.id}, {'$set': {'last': today, 'total': total} })
         await interaction.response.send_message(f"Seems like you lost your streak! New one starts.... Now!")
     except:
         error = traceback.format_exc()
