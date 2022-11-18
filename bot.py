@@ -16,7 +16,6 @@ async def help(interaction: nextcord.Interaction):
 Commands:
 **>** **cry**: adds to your cry count
 **>** **streak**: shows your current, and highest streak
-Use `/help [command]` for more info on each command.
 """,
                            title="Help",
                            color=216728)
