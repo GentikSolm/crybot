@@ -14,3 +14,4 @@ RUN pipenv install --deploy --system
 
 COPY . /bot
 CMD ["python", "-u", "bot.py"]
+
