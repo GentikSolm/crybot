@@ -16,6 +16,7 @@ async def help(interaction: nextcord.Interaction):
 Commands:
 **>** **cry**: adds to your cry count
 **>** **streak**: shows your current, and highest streak
+**>** **leaderboard**: lists hot criers in your area!
 """,
                            title="Help",
                            color=216728)
@@ -78,6 +79,23 @@ async def streak(interaction: nextcord.Interaction):
             await interaction.response.send_message(f"Seems like you lost your streak, but you have cried a total of {crier.get('total')}")
             return
         await interaction.response.send_message(f"Seems like you lost your streak, but your longest one was {longest}, and you have cried a total of {crier.get('total')} times.")
+        return
+    except:
+        error = traceback.format_exc()
+        await interaction.response.send_message(error)
+
+
+@bot.slash_command(description="view hot single criers in your area")
+async def leaderboard(interaction: nextcord.Interaction):
+    try:
+        criers = db.criers.find({"user"}, sort={'streak': 1}, limit=10)
+        leaderboard = """
+━━━━━━━━━━━━━━━
+"""
+        for index, crier in enumerate(criers):
+            leaderboard += f"**{index}. {crier.get('user')}: {crier.get('streak')}**\n"
+        embed = nextcord.Embed(description=leaderboard, title='Leaderboard', color=216728)
+        await interaction.response.send_message(embed=embed)
         return
     except:
         error = traceback.format_exc()
