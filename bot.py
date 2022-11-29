@@ -93,7 +93,8 @@ async def leaderboard(interaction: nextcord.Interaction):
 ━━━━━━━━━━━━━━━
 """
         for index, crier in enumerate(criers):
-            leaderboard += f"**{index}. {crier.get('user')}: {crier.get('streak')}**\n"
+            username = await bot.fetch_user(crier.get('user'))
+            leaderboard += f"**{index}. {username.display_name}: {crier.get('streak')}**\n"
         embed = nextcord.Embed(description=leaderboard, title='Leaderboard', color=216728)
         await interaction.response.send_message(embed=embed)
         return
