@@ -4,6 +4,7 @@ import os
 import nextcord
 from pymongo import MongoClient
 import traceback
+from responses import lost_your_streak, increase_streak, increase_total, new_crier, ran_index
 
 bot = commands.Bot()
 client = MongoClient(os.getenv('MONGO_URL'))
@@ -36,12 +37,12 @@ async def cry(interaction: nextcord.Interaction):
         if(crier == None):
             total = 1
             db.criers.insert_one({"user": interaction.user.id, 'last': today, 'total': total, 'streak': 1})
-            await interaction.response.send_message(f"Seems like you're new here, your crying streak starts.... Now!")
+            await interaction.response.send_message(ran_index(new_crier))
             return
 
         if(crier.get('last') == today):
             db.criers.update_one({"user": interaction.user.id}, {'$set': {'total': crier['total'] + 1} })
-            await interaction.response.send_message("Rough day huh?")
+            await interaction.response.send_message(ran_index(increase_total))
             return
 
         if(crier.get('last') == yesterday):
@@ -50,10 +51,10 @@ async def cry(interaction: nextcord.Interaction):
                 'total': crier['total'] + 1,
                 'streak': crier['streak'] + 1
             }})
-            await interaction.response.send_message(f"You're on a roll, you have cried for {crier['streak']} days in a row!")
+            await interaction.response.send_message(ran_index(increase_streak) + f", you have cried for {crier['streak']} days in a row!")
             return
         db.criers.update_one({"user": interaction.user.id}, {'$set': {'last': today, 'streak': 1, 'longest': crier.get('streak')} })
-        await interaction.response.send_message(f"Seems like you lost your streak! New one starts.... Now!")
+        await interaction.response.send_message(ran_index(lost_your_streak))
     except:
         error = traceback.format_exc()
         await interaction.response.send_message(error)
