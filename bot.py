@@ -29,27 +29,29 @@ async def cry(interaction: nextcord.Interaction):
             return
 
         crier = db.criers.find_one({ "user" : interaction.user.id})
-        print(crier)
         today = date.today()
         yesterday = str(today - timedelta(days = 1))
         today = str(today)
         if(crier == None):
             total = 1
-            db.criers.insert_one({"user": interaction.user.id, 'last': today, 'total': total})
+            db.criers.insert_one({"user": interaction.user.id, 'last': today, 'total': total, 'streak': 1})
             await interaction.response.send_message(f"Seems like you're new here, your crying streak starts.... Now!")
             return
 
-        if(crier['last'] == today):
-            await interaction.response.send_message("You already cried today!")
+        if(crier.get('last') == today):
+            db.criers.update_one({"user": interaction.user.id}, {'$set': {'total': crier['total'] + 1} })
+            await interaction.response.send_message("Rough day huh?")
             return
 
-        if(crier['last'] == yesterday):
-            total = crier['total'] + 1
-            db.criers.update_one({"user": interaction.user.id}, {'$set': {'last': today, 'total': total} })
-            await interaction.response.send_message(f"You're on a roll, youve cried for {total} days in a row!")
+        if(crier.get('last') == yesterday):
+            db.criers.update_one({"user": interaction.user.id}, {'$set': {
+                'last': today,
+                'total': crier['total'] + 1,
+                'streak': crier['streak'] + 1
+            }})
+            await interaction.response.send_message(f"You're on a roll, you have cried for {crier['streak']} days in a row!")
             return
-        total = 1
-        db.criers.update_one({"user": interaction.user.id}, {'$set': {'last': today, 'total': total} })
+        db.criers.update_one({"user": interaction.user.id}, {'$set': {'last': today, 'streak': 1, 'longest': crier.get('streak')} })
         await interaction.response.send_message(f"Seems like you lost your streak! New one starts.... Now!")
     except:
         error = traceback.format_exc()
@@ -69,9 +71,13 @@ async def streak(interaction: nextcord.Interaction):
         yesterday = str(today - timedelta(days = 1))
         today = str(today)
         if(crier['last'] == yesterday or crier['last'] == today):
-            await interaction.response.send_message(f"Your current streak is {crier['total']}")
+            await interaction.response.send_message(f"Your current streak is {crier['streak']}, and you have cried a total of {crier.get('total')} times.")
             return
-        await interaction.response.send_message(f"Seems like you lost your streak, but your last one was {crier['total']}")
+        longest = crier.get('longest')
+        if(longest == None):
+            await interaction.response.send_message(f"Seems like you lost your streak, but you have cried a total of {crier.get('total')}")
+            return
+        await interaction.response.send_message(f"Seems like you lost your streak, but your longest one was {longest}, and you have cried a total of {crier.get('total')} times.")
         return
     except:
         error = traceback.format_exc()
