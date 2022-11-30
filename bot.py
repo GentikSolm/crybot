@@ -92,7 +92,7 @@ async def streak(interaction: nextcord.Interaction):
 @bot.slash_command(description="view hot single criers in your area")
 async def leaderboard(interaction: nextcord.Interaction):
     try:
-        criers = db.criers.find({"user"}, sort={'streak': 1}, limit=10)
+        criers = db.criers.find({}, sort={'streak': 1}, limit=10)
         leaderboard = """
 ━━━━━━━━━━━━━━━
 """
