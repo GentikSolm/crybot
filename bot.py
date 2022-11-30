@@ -56,6 +56,9 @@ async def cry(interaction: nextcord.Interaction):
             }})
             await interaction.response.send_message(ran_index(increase_streak) + f", you have cried for {_streak} days in a row!")
             return
+
+        if(crier.get('longest') > _streak):
+            _streak = crier.get('longest')
         db.criers.update_one({"user": interaction.user.id}, {'$set': {'last': today, 'streak': 1, 'longest': _streak} })
         await interaction.response.send_message(ran_index(lost_your_streak))
     except:
