@@ -40,6 +40,9 @@ async def cry(interaction: nextcord.Interaction):
             await interaction.response.send_message(ran_index(new_crier))
             return
 
+        _streak = crier.get('streak')
+        if(_streak == None):
+            _streak = 0
         if(crier.get('last') == today):
             db.criers.update_one({"user": interaction.user.id}, {'$set': {'total': crier['total'] + 1} })
             await interaction.response.send_message(ran_index(increase_total))
@@ -49,11 +52,11 @@ async def cry(interaction: nextcord.Interaction):
             db.criers.update_one({"user": interaction.user.id}, {'$set': {
                 'last': today,
                 'total': crier['total'] + 1,
-                'streak': crier['streak'] + 1
+                'streak': _streak + 1
             }})
-            await interaction.response.send_message(ran_index(increase_streak) + f", you have cried for {crier['streak']} days in a row!")
+            await interaction.response.send_message(ran_index(increase_streak) + f", you have cried for {_streak} days in a row!")
             return
-        db.criers.update_one({"user": interaction.user.id}, {'$set': {'last': today, 'streak': 1, 'longest': crier.get('streak')} })
+        db.criers.update_one({"user": interaction.user.id}, {'$set': {'last': today, 'streak': 1, 'longest': _streak} })
         await interaction.response.send_message(ran_index(lost_your_streak))
     except:
         error = traceback.format_exc()
