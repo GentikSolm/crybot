@@ -8,7 +8,7 @@ CHECK  := `/usr/bin/printf "\xE2\x9C\x94"`
 build:
     @docker compose build
 
-up:
+up: build
     @docker compose up -d
 
 test: build
