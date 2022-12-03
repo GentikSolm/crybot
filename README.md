@@ -1,4 +1,5 @@
-# crybot
+# Crybot
+
 Tracks how often you be cryin
 
 ### Setup
@@ -18,10 +19,12 @@ https://discord.com/api/oauth2/authorize?client_id=<Your bots client ID>&permiss
 Finally, place your `token` in the `.env` file, along with the mongo db url. Feel free to use the `sample.env` file.
 
 ### Testing
+
 To test locally, start the system with `just up`. This will build and run the ecosystem. You can watch the logs via
 `docker compose logs -f bot`
 
 ### Contributing
+
 This repository uses [conventional commits][https://www.conventionalcommits.org/en/v1.0.0/].
 Commit messages must follow the specifications. See previous commit messages for examples.
 
