@@ -45,7 +45,6 @@ jobs:
         tag_prefix: ""
 
     - name: Generate Changelog
-      id: auto_tag_generation
       uses: heinrichreimer/github-changelog-generator-action@v2.3
       with:
         token: ${{secrets.GITHUB_TOKEN}}
