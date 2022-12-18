@@ -5,8 +5,8 @@ services:
     volumes:
       - mymongo:/data/db
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=cry
-      - MONGO_INITDB_ROOT_PASSWORD=bot
+      - MONGO_INITDB_ROOT_USERNAME=${DB_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${DB_PASS}
       - MONGO_INITDB_DATABASE=abot
     ports:
       - "27018:27017"
@@ -18,11 +18,11 @@ services:
     image: mongo-express
     environment:
       - ME_CONFIG_MONGODB_SERVER=mongo
-      - ME_CONFIG_MONGODB_PORT=27018
+      - ME_CONFIG_MONGODB_PORT=27017
       - ME_CONFIG_MONGODB_ENABLE_ADMIN=true
       - ME_CONFIG_MONGODB_AUTH_DATABASE=admin
-      - ME_CONFIG_MONGODB_AUTH_USERNAME=cry
-      - ME_CONFIG_MONGODB_AUTH_PASSWORD=bot
+      - ME_CONFIG_MONGODB_AUTH_USERNAME=${DB_USER}
+      - ME_CONFIG_MONGODB_AUTH_PASSWORD=${DB_PASS}
       - ME_CONFIG_BASICAUTH_USERNAME=dev
       - ME_CONFIG_BASICAUTH_PASSWORD=dev
     ports:

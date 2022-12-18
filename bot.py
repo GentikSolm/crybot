@@ -54,7 +54,7 @@ async def cry(interaction: nextcord.Interaction):
                 'total': crier['total'] + 1,
                 'streak': _streak + 1
             }})
-            await interaction.response.send_message(ran_index(increase_streak) + f", you have cried for {_streak} days in a row!")
+            await interaction.response.send_message(ran_index(increase_streak) + f", you have cried for {_streak+1} days in a row!")
             return
 
         if(crier.get('longest') != None and crier['longest'] > _streak):
