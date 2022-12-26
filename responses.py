@@ -14,8 +14,8 @@ increase_streak = [
     "I see you're crying in the club again",
     "Another day another tear",
     "Right on time",
-    "Do you have an alarm set for this?",
-    "And how does that make you feel?"
+    "Do you have an alarm set for this? Consistency is good",
+    "How does that make you feel? Crying is okay"
     ]
 
 increase_total = [
