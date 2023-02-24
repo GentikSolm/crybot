@@ -13,3 +13,6 @@ up: build
 
 test: build
     @echo -e " {{GREEN}}{{CHECK}} All tests passed! {{CHECK}} {{RESET}}"
+
+down:
+    @docker compose down
