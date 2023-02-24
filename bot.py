@@ -54,6 +54,24 @@ async def cry(interaction: nextcord.Interaction):
                 'total': crier['total'] + 1,
                 'streak': _streak + 1
             }})
+            if(interaction.user.id == 161173763063414784):
+                response = ran_index([
+                        *increase_streak,
+                        "Lets be honest, no one cries more than DV. Not even if they tried. Anyways",
+                        "Legend has it DV will never lose his streak agian, anyways"
+                    ]) + f", you have cried for {_streak+1} days in a row!"
+                await interaction.response.send_message(response)
+                return
+
+            if(interaction.user.id == 284429760900366342):
+                response = ran_index([
+                        *increase_streak,
+                        "You should ask soup to comfort you bean. Maybe he can take a bath in your tears. In other news",
+                        "Why do I feel like this isn't going to be the last time beanDango cries today"
+                    ]) + f", you have cried for {_streak+1} days in a row!"
+                await interaction.response.send_message(response)
+                return
+
             await interaction.response.send_message(ran_index(increase_streak) + f", you have cried for {_streak+1} days in a row!")
             return
 
