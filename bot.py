@@ -66,8 +66,9 @@ async def cry(interaction: nextcord.Interaction):
             if(interaction.user.id == 284429760900366342):
                 response = ran_index([
                         *increase_streak,
-                        "You should ask soup to comfort you bean. Maybe he can take a bath in your tears. In other news",
-                        "Why do I feel like this isn't going to be the last time beanDango cries today"
+                        "You should ask Soup to comfort you Dango. Maybe she can take a bath in your tears. In other news",
+                        "Why do I feel like this isn't going to be the last time beanDango cries today",
+                        "Don't cry Dango, you need to be strong for Soup! Anyway"
                     ]) + f", you have cried for {_streak+1} days in a row!"
                 await interaction.response.send_message(response)
                 return
