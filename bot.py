@@ -30,13 +30,13 @@ async def cry(interaction: nextcord.Interaction):
             await interaction.response.send_message("Caller not found!")
             return
 
-        crier = db.criers.find_one({ "user" : interaction.user.id})
+        crier = db.criers.find_one({ "user" : str(interaction.user.id)})
         today = date.today()
         yesterday = str(today - timedelta(days = 1))
         today = str(today)
         if(crier == None):
             total = 1
-            db.criers.insert_one({"user": interaction.user.id, 'last': today, 'total': total, 'streak': 1})
+            db.criers.insert_one({"user": str(interaction.user.id), 'last': today, 'total': total, 'streak': 1})
             await interaction.response.send_message(ran_index(new_crier))
             return
 
@@ -44,12 +44,12 @@ async def cry(interaction: nextcord.Interaction):
         if(_streak == None):
             _streak = 0
         if(crier.get('last') == today):
-            db.criers.update_one({"user": interaction.user.id}, {'$set': {'total': crier['total'] + 1} })
+            db.criers.update_one({"user": str(interaction.user.id)}, {'$set': {'total': crier['total'] + 1} })
             await interaction.response.send_message(ran_index(increase_total))
             return
 
         if(crier.get('last') == yesterday):
-            db.criers.update_one({"user": interaction.user.id}, {'$set': {
+            db.criers.update_one({"user": str(interaction.user.id)}, {'$set': {
                 'last': today,
                 'total': crier['total'] + 1,
                 'streak': _streak + 1
@@ -78,7 +78,7 @@ async def cry(interaction: nextcord.Interaction):
 
         if(crier.get('longest') != None and crier['longest'] > _streak):
             _streak = crier.get('longest')
-        db.criers.update_one({"user": interaction.user.id}, {'$set': {'last': today, 'streak': 1, 'longest': _streak} })
+        db.criers.update_one({"user": str(interaction.user.id)}, {'$set': {'last': today, 'streak': 1, 'longest': _streak} })
         await interaction.response.send_message(ran_index(lost_your_streak))
     except:
         error = traceback.format_exc()
@@ -90,7 +90,7 @@ async def streak(interaction: nextcord.Interaction):
         if(interaction.user == None):
             await interaction.response.send_message("Caller not found!")
             return
-        crier = db.criers.find_one({ "user" : interaction.user.id})
+        crier = db.criers.find_one({ "user" : str(interaction.user.id)})
         if(crier == None):
             await interaction.response.send_message("Seems like youve never cried, good shit tbh")
             return
