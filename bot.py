@@ -5,6 +5,7 @@ import nextcord
 from pymongo import MongoClient
 import traceback
 from responses import lost_your_streak, increase_streak, increase_total, new_crier, ran_index
+import requests
 
 bot = commands.Bot()
 client = MongoClient(os.getenv('MONGO_URL'))
@@ -124,6 +125,27 @@ async def leaderboard(interaction: nextcord.Interaction):
         embed = nextcord.Embed(description=leaderboard, title='Leaderboard', color=216728)
         await interaction.response.send_message(embed=embed)
         return
+    except:
+        error = traceback.format_exc()
+        await interaction.response.send_message(error)
+
+@bot.slash_command(description="sets the bot's avatar")
+async def set_avatar(interaction: nextcord.Interaction, avatar: str):
+    try:
+        if(interaction.user == None):
+            await interaction.response.send_message("Caller not found!")
+            return
+
+        crier = db.criers.find_one({}, sort=[ ('streak', -1) ]).get('user')
+        user = await bot.fetch_user(crier)
+        if(interaction.user.id != user.id and interaction.user.guild_permissions.administrator == False):
+            await interaction.response.send_message("You are not authorized to do that!")
+            return
+
+        response = requests.get(avatar)
+        avatarImage = response.content
+        await bot.user.edit(avatar=avatarImage)
+        await interaction.response.send_message("Avatar updated!")
     except:
         error = traceback.format_exc()
         await interaction.response.send_message(error)
